@@ -1,0 +1,9 @@
+[project]
+name = "adultnea"
+version = "0.1.0"
+description = "Add your description here"
+readme = "README.md"
+requires-python = ">=3.11"
+dependencies = [
+    "discord.py-self>=2.0.1",
+]
