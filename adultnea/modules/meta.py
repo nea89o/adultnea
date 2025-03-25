@@ -1,4 +1,5 @@
 import logging
+from encodings.aliases import aliases
 from tarfile import TruncatedHeaderError
 
 import discord.ext.commands as commands
@@ -19,7 +20,7 @@ async def ls(ctx: Context):
     await ctx.followup('Modules:\n' + '\n'.join(f'- `{name}`' for name in module_names))
 
 
-@mod.command()
+@mod.command(aliases=['r'])
 async def reload(ctx: Context):
     await ctx.followup(content='Reload started.')
     await ctx.bot.reload_all()

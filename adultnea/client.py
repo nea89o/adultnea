@@ -1,21 +1,25 @@
 import logging
 from pathlib import Path
-from typing import Any, Optional
+from typing import Any, Optional, Sequence, Union
 
 import discord.ext.commands as commands
 from discord.ext.commands import errors
 import discord
+
 
 class Context(commands.Context['AdultClient']):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.followup_message: Optional[discord.message.Message] = None
 
-    async def followup(self, content: str):
+    async def followup(self,
+                       content: str,
+                       attachments: Sequence[Union[discord.Attachment, discord.File]] = discord.utils.MISSING,
+                       ):
         if self.followup_message:
-            await self.followup_message.edit(content)
+            await self.followup_message.edit(content, attachments=attachments)
         else:
-            self.followup_message = await self.reply(content)
+            self.followup_message = await self.reply(content, files=attachments)
 
 
 class AdultClient(commands.Bot):

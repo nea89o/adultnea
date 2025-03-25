@@ -6,4 +6,5 @@ readme = "README.md"
 requires-python = ">=3.11"
 dependencies = [
     "discord.py-self>=2.0.1",
+    "pillow>=11.1.0",
 ]
