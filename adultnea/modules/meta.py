@@ -1,10 +1,8 @@
 import logging
-from encodings.aliases import aliases
-from tarfile import TruncatedHeaderError
 
 import discord.ext.commands as commands
 
-from adultnea.client import AdultClient, client, Context
+from adultnea.client import AdultClient, Context
 
 
 @commands.group(
