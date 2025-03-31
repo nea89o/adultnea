@@ -4,6 +4,14 @@ default_install_hook_types:
     - post-merge
     - post-rewrite
 repos:
+    -   repo: https://github.com/astral-sh/ruff-pre-commit
+        # Ruff version.
+        rev: v0.11.2
+        hooks:
+            # Run the linter.
+            -   id: ruff
+            # Run the formatter.
+            -   id: ruff-format
     -   repo: https://github.com/astral-sh/uv-pre-commit
         rev: 0.6.11
         hooks:

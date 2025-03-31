@@ -14,7 +14,14 @@ dependencies = [
 [dependency-groups]
 dev = [
     "pyright>=1.1.398",
+    "ruff>=0.11.2",
 ]
+
+[tool.ruff]
+[tool.ruff.format]
+quote-style = "single"
+indent-style = "tab"
+docstring-code-format = true
 
 [tool.pyright]
 include = ["adultnea"]
