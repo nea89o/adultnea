@@ -14,5 +14,7 @@ repos:
             -   id: check-types
                 language: python
                 name: "Pyright"
+                additional_dependencies:
+                    - uv
                 files: adultnea/.*\.py
                 entry: uv run pyright
