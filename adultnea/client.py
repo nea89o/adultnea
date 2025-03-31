@@ -20,11 +20,19 @@ class Context(commands.Context['AdultClient']):
 		self,
 		content: str,
 		attachments: Sequence[discord.File] = discord.utils.MISSING,
+		allowed_mentions: Optional[discord.AllowedMentions] = None,
 	):
+		allowed_mentions = allowed_mentions or discord.AllowedMentions.none()
 		if self.followup_message:
-			await self.followup_message.edit(content=content, attachments=attachments)
+			await self.followup_message.edit(
+				content=content,
+				attachments=attachments,
+				allowed_mentions=allowed_mentions,
+			)
 		else:
-			self.followup_message = await self.reply(content, files=attachments)
+			self.followup_message = await self.reply(
+				content, files=attachments, allowed_mentions=allowed_mentions
+			)
 
 
 class AdultClient(commands.Bot):
