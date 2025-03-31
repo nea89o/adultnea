@@ -34,7 +34,11 @@ class AdultClient(commands.Bot):
 
     async def setup_hook(self) -> None:
         await self.reload_all()
-        self.http_session = aiohttp.ClientSession(loop=self.loop)
+        self.http_session = aiohttp.ClientSession(
+            loop=self.loop,
+            headers={
+                'user-agent': aiohttp.http.SERVER_SOFTWARE + " AdultNea (github.com/nea89o/adultnea/)"
+            })
 
     async def reload_all(self):
         base_path = Path(__file__).parent / 'modules'

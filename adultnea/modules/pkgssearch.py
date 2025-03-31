@@ -1,16 +1,11 @@
 import abc
-import asyncio
 import dataclasses
 import datetime
-import logging
 import urllib.parse
 from abc import abstractmethod
-from sys import prefix
 from typing import TypedDict, Optional
 
-import aiohttp
 import discord.ext.commands as commands
-import discord
 from adultnea.client import AdultClient, Context
 from adultnea.utils import join_till_limit
 
@@ -85,8 +80,43 @@ class SMOSearch(Search):
         return JAVA_LABELS + ['smo']
 
 
+class CratesIOSearch(Search):
+    class Response(TypedDict):
+        crates: list['CratesIOSearch.Crate']
+
+    class Crate(TypedDict):
+        id: str
+        name: str
+        max_version: str
+        description: str
+        num_versions: int
+        updated_at: str
+        """A timestamp in ISO 8601"""
+        documentation: str
+
+    def labels(self) -> list[str]:
+        return ['rust', 'rs', 'cargo', 'crate', 'crates']
+
+    async def search(self, client: AdultClient, name: str) -> list[Package]:
+        async with client.http_session.get(mkurl('https://crates.io/api/v1/crates', q=name, per_page="20")) as resp:
+            j: CratesIOSearch.Response = await resp.json()
+            return [
+                Package(
+                    it['id'],
+                    it['name'],
+                    f'https://crates.io/crates/{it['id']}',
+                    it['max_version'],
+                    it['num_versions'],
+                    datetime.datetime.fromisoformat(it['updated_at']),
+                    'crates.io'
+                )
+                for it in j['crates']
+            ]
+
+
 searches = [
-    SMOSearch()
+    SMOSearch(),
+    CratesIOSearch(),
 ]
 
 assert all(tag.casefold() == tag
@@ -94,7 +124,7 @@ assert all(tag.casefold() == tag
            for tag in search.labels())
 
 
-@commands.group(invoke_without_command=True)
+@commands.group(invoke_without_command=True, aliases=['pkgs'])
 async def pkg(ctx: Context,
               tag: str, *,
               search: str):
@@ -110,8 +140,8 @@ async def pkg(ctx: Context,
         return
     message = join_till_limit(
         '\n',
-        (f'- [`{it.id}`@`{it.latestVersion}`]({it.link})' for it in packages),
-        prefix=f'Packages ({len(packages)}):\n',
+        (f'- [`{it.id}`@`{it.latestVersion}`](<{it.link}>)' for it in packages),
+        prefix=f'Packages:\n',
     )
     await ctx.followup(message)
 
