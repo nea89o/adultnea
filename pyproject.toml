@@ -3,8 +3,14 @@ name = "adultnea"
 version = "0.1.0"
 description = "Add your description here"
 readme = "README.md"
-requires-python = ">=3.11"
+requires-python = ">=3.13"
 dependencies = [
     "discord.py-self>=2.0.1",
     "pillow>=11.1.0",
+
+    # Required onpython 3.13+: https://docs.python.org/3/whatsnew/3.13.html#whatsnew313-pep594
+    "audioop-lts"
 ]
+
+[project.scripts]
+adultnea = "adultnea:main"
