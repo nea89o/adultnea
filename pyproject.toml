@@ -8,7 +8,8 @@ dependencies = [
     "discord.py-self>=2.0.1",
     "pillow>=11.1.0",
     # Required onpython 3.13+: https://docs.python.org/3/whatsnew/3.13.html#whatsnew313-pep594
-    "audioop-lts"
+    "audioop-lts",
+    "python-dotenv>=1.1.0",
 ]
 
 [dependency-groups]
