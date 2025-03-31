@@ -2,6 +2,7 @@ import datetime
 import inspect
 import logging
 import textwrap
+import typing
 from configparser import ConverterMapping
 
 import discord.ext.commands as commands
@@ -20,27 +21,17 @@ async def dinfo(ctx: Context):
 async def user(ctx: Context, user: discord.User):
     pass  # TODO
 
+
 def format_timestamp(i: datetime.datetime):
     return f'<t:{int(i.timestamp())}:f>'
 
-class GuildConv(commands.GuildConverter):
 
-    async def convert(self, ctx: Context, argument: str) -> discord.Guild:
-        try:
-            return await super().convert(ctx, argument)
-        except commands.CommandError:
-            try:
-                chan = await commands.GuildChannelConverter() \
-                    .convert(ctx, argument)
-                return chan.guild
-            except commands.CommandError:
-                pass
-            raise
-
-
-@dinfo.command(aliases=['server', 's', 'g'])
-async def guild(ctx: Context, guild: GuildConv):
-    guild: discord.Guild
+@dinfo.command(name='guild', aliases=['server', 's', 'g'])
+async def _guild(
+        ctx: Context,
+        guild: typing.Union[discord.abc.GuildChannel, discord.Guild]):
+    if isinstance(guild, discord.abc.GuildChannel):
+        guild = guild.guild
     guild = await ctx.bot.fetch_guild(guild.id)
     await ctx.followup(
         textwrap.dedent(
