@@ -35,6 +35,10 @@ jobs:
                 name: Checkout Repository
             -   uses: actions/setup-python@v4
                 name: Setup Python
+            -   uses: astral-sh/setup-uv@v5
+                name: Setup UV
+            -   name: Sync dependencies
+                run: uv sync
             -   name: Check ${{ matrix.hook }}
                 uses: pre-commit/action@v3.0.1
                 with:
