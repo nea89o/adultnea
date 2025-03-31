@@ -7,15 +7,19 @@ requires-python = ">=3.13"
 dependencies = [
     "discord.py-self>=2.0.1",
     "pillow>=11.1.0",
-
     # Required onpython 3.13+: https://docs.python.org/3/whatsnew/3.13.html#whatsnew313-pep594
     "audioop-lts"
 ]
 
 [dependency-groups]
 dev = [
-    "mypy>=1.15.0",
-    # "ruff>=0.11.2",
+    "pyright>=1.1.398",
+]
+
+[tool.pyright]
+include = ["adultnea"]
+exclude = [
+    "**/__pycache__",
 ]
 
 [project.scripts]

@@ -10,14 +10,14 @@ import discord
 
 
 class Context(commands.Context['AdultClient']):
-    followup_message: Optional[discord.utils.Message]
+    followup_message: Optional[discord.message.Message]
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
         self.followup_message = None
 
     async def followup(self,
                        content: str,
-                       attachments: Sequence[Union[discord.File]] = discord.utils.MISSING,
+                       attachments: Sequence[discord.File] = discord.utils.MISSING,
                        ):
         if self.followup_message:
             await self.followup_message.edit(
@@ -47,6 +47,7 @@ class AdultClient(commands.Bot):
 
     async def reload_all(self) -> None:
         base_path = Path(__file__).parent / 'modules'
+        assert __package__
         base_package = __package__ + '.modules'
         for file in base_path.rglob('*.py'):
             typing.assert_type(file, Path)

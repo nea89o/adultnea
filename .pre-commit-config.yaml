@@ -1,0 +1,18 @@
+default_install_hook_types:
+    - pre-commit
+    - post-checkout
+    - post-merge
+    - post-rewrite
+repos:
+    -   repo: https://github.com/astral-sh/uv-pre-commit
+        rev: 0.6.11
+        hooks:
+            -   id: uv-sync
+            -   id: uv-lock
+    -   repo: local
+        hooks:
+            -   id: check-types
+                language: python
+                name: "Pyright"
+                files: adultnea/.*\.py
+                entry: uv run pyright

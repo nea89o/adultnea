@@ -14,6 +14,7 @@ async def mod(ctx: Context):
 
 @mod.command()
 async def ls(ctx: Context):
+    assert __package__
     module_names = [it.replace(__package__, '') for it in ctx.bot.extensions.keys()]
     await ctx.followup('Modules:\n' + '\n'.join(f'- `{name}`' for name in module_names))
 

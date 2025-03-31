@@ -11,7 +11,7 @@ from PIL import Image, ImageSequence, ImagePalette
 @commands.command(aliases=['pat'])
 async def patpat(ctx: Context, user: discord.User, speed: int = 100):
     patpat = Image.open((Path(__file__).parent / 'patpatempty.gif'))
-    avatar_bytes = await user.avatar.read()
+    avatar_bytes = await user.display_avatar.read()
     with io.BytesIO(avatar_bytes) as avatar_fp:
         avatar = Image.open(avatar_fp)
 
@@ -21,7 +21,8 @@ async def patpat(ctx: Context, user: discord.User, speed: int = 100):
         ]
 
         frames = []
-        for frame_idx in range(patpat.n_frames):
+        assert hasattr(patpat,'n_frames'), "patpatempty.gif is not animated"
+        for frame_idx in range(getattr(patpat, 'n_frames')):
             frame = Image.new('RGBA', patpat.size)
             frames.append(frame)
             patpat.seek(frame_idx)
