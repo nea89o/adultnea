@@ -20,8 +20,7 @@ jobs:
                 id: generate-matrix
                 run: |
                     printf 'hooks=' >>"$GITHUB_OUTPUT"
-                    # Note: GitHub runner image mentions a yq already being installed. That is not jq but for yaml, but another unrelated program
-                    pipx run yq -c '[.repos[]|.hooks[]|.id]' <.pre-commit-config.yaml | tee -a "$GITHUB_OUTPUT"
+                    pipx run pre-commit run --files "" -v --color never | grep 'hook id'| sed -E 's|.*: (.*)|\1|g' |xargs printf '"%s"\n'|jq --slurp -c | tee -a "$GITHUB_OUTPUT" 
                     echo >>"$GITHUB_OUTPUT"
                     cat "$GITHUB_OUTPUT"
     pre-commit:

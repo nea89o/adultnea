@@ -9,6 +9,7 @@ def join_till_limit(
         prefix: str = "",
         postfix: str = "",
 ):
+
     message = prefix
     budget = 2000 - len(prefix) - len(postfix)
     is_first = True
